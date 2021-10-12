@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $abyssblue;
+}
+
+.container {
+    box-shadow: 2px 8px 8px 2px rgba(0, 0, 0, 0.2);
+}
+
+$max-width: 1280px;
+$hamburger-layer-color: #a7b1c1 !important;
+$hamburger-types     : (collapse);
+
+@import "../hamburgers/_sass/hamburgers/hamburgers.scss";

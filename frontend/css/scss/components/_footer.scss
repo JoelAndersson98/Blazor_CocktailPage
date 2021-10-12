@@ -1,0 +1,37 @@
+.site-footer {
+    border-top: 1px solid $lightblue;
+    color: $gray;
+    font-size: 16px;
+    padding: 1.4rem 2rem;
+    background-color: $darkblue;
+
+    a {
+        text-decoration: none;
+        color: $gray;
+        font-weight: 600;
+    }
+
+    .container {
+        box-shadow: none;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .footer-text {
+        margin-top: 1rem;
+        font-size: 18px;
+    }
+
+    .link-box {
+        i {
+            color: $gray;
+            transition: 0.3s;
+
+            &:hover {
+                opacity: 0.85;
+            }
+        }
+    }
+}

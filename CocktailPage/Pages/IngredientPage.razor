@@ -1,0 +1,90 @@
+﻿@page "/ingredient/{name}"
+@inject IJSRuntime JS
+
+@if (!IngredientList.Ingredients.Any())
+{
+    <div class="centered">
+        <div class="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (var item in IngredientList.Ingredients)
+    {
+        <div class="container ingredient-page">
+            <div class="header text-center">
+                <h1>@item.strIngredient</h1>
+                <hr>
+                <img src="https://www.thecocktaildb.com/images/ingredients/@item.strIngredient-Medium.png" alt="drink-img">
+                @if (item.strType != null)
+                {
+                    <div class="categories d-flex justify-content-center align-items-center">
+                        <span>Type: </span>
+                        <div class="tag-box">
+                            <p>@item.strType</p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="description text-center">
+                <button type="button" class="collapsible" @onclick="ToggleCollapsible">Description<i class="fas fa-arrow-down"></i></button>
+                <div class="content">
+                    @if (@item.strDescription == null)
+                    {
+                        <p>No description found :(</p>
+                    }
+                    else
+                    {
+                        <p>@item.strDescription</p>
+                    }
+                </div>
+            </div>
+
+            <div class="used-in text-center">
+                <button type="button" class="collapsible" @onclick="ToggleCollapsible">Used in<i class="fas fa-arrow-down"></i></button>
+                <div class="content">
+                    @foreach (var drink in DrinkList.Drinks)
+                    {
+                        <CocktailCard Drink="drink" />
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    IngredientList IngredientList = new IngredientList();
+    DrinkList DrinkList = new DrinkList();
+
+    protected async override Task OnInitializedAsync()
+    {
+        IngredientList = await Http.GetFromJsonAsync<IngredientList>($"https://www.thecocktaildb.com/api/json/v1/1/search.php?i={Name}");
+
+        await GetDrinks();
+    }
+
+    private async Task<DrinkList> GetDrinks()
+    {
+        DrinkList = await Http.GetFromJsonAsync<DrinkList>($"https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={Name}");
+
+        return DrinkList;
+    }
+
+    private async void ToggleCollapsible()
+    {
+        await JS.InvokeVoidAsync("toggleCollapsible", "");
+    }
+}

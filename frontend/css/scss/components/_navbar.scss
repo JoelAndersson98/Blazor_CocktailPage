@@ -1,0 +1,21 @@
+.navbar {
+    font-family: $font-roboto;
+    background-color: $darkblue;
+    border-bottom: 1px solid $lightblue;
+    
+    .navbar-brand {
+        color: $gray;
+        margin-bottom: 2px;
+    }
+
+    .container {
+        box-shadow: none;
+    }
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+}

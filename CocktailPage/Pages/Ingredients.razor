@@ -1,0 +1,58 @@
+﻿@page "/ingredients"
+@inject HttpClient Http
+
+<div class="container main ingredients-list">
+    <h1 class="text-center gray">Ingredients</h1>
+    <div class="content">
+        @if (_ingredients == null)
+        {
+            <div class="centered">
+                <div class="sk-chase">
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                    <div class="sk-chase-dot"></div>
+                </div>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in _ingredients)
+            {
+                <div class="cocktail-card">
+                    <a href="@($"ingredient/{item}")">
+                        <img src="https://www.thecocktaildb.com/images/ingredients/@item-Medium.png" alt="drink-img">
+                        <p>@item</p>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    List<string> _ingredients = new List<string>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            var json = await Http.GetStringAsync("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list");
+
+            DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+            DataTable dataTable = dataSet.Tables["drinks"];
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                _ingredients.Add(row["strIngredient1"].ToString());
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+}

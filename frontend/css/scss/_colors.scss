@@ -1,0 +1,34 @@
+$dark: #292929;
+$darker: #121212;
+$gray: #a7b1c1;
+$white: #FFFFFF;
+$abyssblue: #1D1F29;
+$darkblue: #222431;
+$blue: #272937;
+$lightblue: #36384A;
+
+.darker {
+    color: $darker;
+}
+.dark {
+    color: $dark;
+}
+.white {
+    color: $white;
+}
+.gray {
+    color: $gray;
+}
+
+.bg-gray {
+    background-color: $gray;
+}
+.bg-darker {
+    background-color: $darker;
+}
+.bg-dark {
+    background-color: $dark;
+}
+.bg-white {
+    background-color: $white;
+}

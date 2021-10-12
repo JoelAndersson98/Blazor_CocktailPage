@@ -1,0 +1,12 @@
+﻿<div class="cocktail-card">
+    <a href="@($"drink/{Drink.idDrink}")">
+        <img src="@Drink.strDrinkThumb" alt="drink-img">
+        <p>@Drink.strDrink</p>
+    </a>
+</div>
+
+@code {
+    [Parameter]
+    public Drink Drink { get; set; }
+
+}

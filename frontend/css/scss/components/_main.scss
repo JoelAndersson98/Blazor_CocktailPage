@@ -1,0 +1,62 @@
+.main .content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 2rem;
+    @media screen and (min-width:576px) {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .container {
+        box-shadow: none;
+    }
+
+    .cocktail-card {
+
+        img {
+            width: 100%;
+            max-width: 720px;
+            transition: all 0.3s;
+            object-fit: cover;
+            border-radius: 20px;
+            animation: animateThumb 0.5s;
+        
+            @keyframes animateThumb {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 100;
+                }
+            }
+        
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+
+        a {
+            text-decoration: none;
+
+            @media(min-width:768px) {
+                font-size: 18px;
+            }
+        }
+
+
+        p {
+            text-align: center;
+            color: $gray;
+            font-family: $font-abel;
+        }
+    }
+}
+
+/* Ingredients list page thing */
+
+.ingredients-list {
+
+    img {
+        border-radius: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+}

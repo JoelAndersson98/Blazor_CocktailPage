@@ -1,0 +1,55 @@
+﻿@page "/"
+
+<div class="main">
+    <div class="container">
+        <SearchBar OnSearch="Search" />
+        <h1 class="text-center gray">Cocktails</h1>
+        <div class="content">
+            @if (drinks.Drinks == null)
+            {
+            <div class="text-center">
+                <h3 class="gray">No drinks found :(</h3>
+            </div>
+                
+            }
+            else
+            {
+                @foreach (var drink in drinks.Drinks)
+                {
+                    <CocktailCard Drink="drink" />
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    DrinkList drinks = new DrinkList();
+
+    private async Task FillCardsAsync(string searchTerm = null)
+    {
+        try
+        {
+            if(String.IsNullOrEmpty(searchTerm))
+                drinks = await Http.GetFromJsonAsync<DrinkList>("https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail");
+            else
+                drinks = await Http.GetFromJsonAsync<DrinkList>($"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={searchTerm}");
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await FillCardsAsync();
+    }
+
+    private async void Search(string searchString)
+    {
+        await FillCardsAsync(searchString);
+    }
+
+}

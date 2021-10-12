@@ -1,0 +1,25 @@
+.search-bar {
+    padding-top: 2rem;
+    .container {
+        box-shadow: none;
+    }
+
+    .input-container {
+        position:relative; 
+        padding: 0; 
+        margin: 0;
+
+        input {
+            padding-left: 2rem;
+            background-color: transparent;
+            border: 1px solid $gray;
+            color: $gray;
+        }
+        i {
+            position:absolute;
+            color: $gray;
+            bottom: 11px;
+            left: 12px;
+        }
+    }
+}

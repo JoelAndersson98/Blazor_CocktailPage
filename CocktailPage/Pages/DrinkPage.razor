@@ -1,0 +1,179 @@
+﻿@page "/drink/{id}"
+
+<div class="container drink-details">
+    @if (!DrinkList.drinks.Any())
+    {
+        <p>Loading...</p>
+    }
+        @foreach (var drink in DrinkList.drinks)
+        {
+        <div class="header text-center">
+            <h1>@drink.strDrink</h1>
+            <hr>
+            <img src="@drink.strDrinkThumb" alt="drink-img">
+            <div class="categories d-flex justify-content-center">
+                <div class="tag-box">
+                    <p>@drink.strCategory</p>
+                </div>
+            </div>
+            @if (drink.strTags != null)
+            {
+                <div class="tags d-flex justify-content-center">
+                    @foreach (var tag in DrinkTags)
+                    {
+                        <div class="tag-box">
+                            <p>@tag</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="d-lg-flex justify-content-center mt-4">
+            <div class="d-md-flex">
+                <div class="box ingredients">
+                    <h3 class="text-start text-md-center">Ingredients</h3>
+                    <ul class="">
+                        @if (drink.strIngredient1 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient1}")">@drink.strIngredient1</a></li>
+                        }
+                        @if (drink.strIngredient2 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient2}")">@drink.strIngredient2</a></li>
+                        }
+                        @if (drink.strIngredient3 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient3}")">@drink.strIngredient3</a></li>
+                        }
+                        @if (drink.strIngredient4 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient4}")">@drink.strIngredient4</a></li>
+                        }
+                        @if (drink.strIngredient5 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient5}")">@drink.strIngredient5</a></li>
+                        }
+                        @if (drink.strIngredient6 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient6}")">@drink.strIngredient6</a></li>
+                        }
+                        @if (drink.strIngredient7 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient7}")">@drink.strIngredient7</a></li>
+                        }
+                        @if (drink.strIngredient8 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient8}")">@drink.strIngredient8</a></li>
+                        }
+                        @if (drink.strIngredient9 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient9}")">@drink.strIngredient9</a></li>
+                        }
+                        @if (drink.strIngredient10 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient10}")">@drink.strIngredient10</a></li>
+                        }
+                        @if (drink.strIngredient11 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient11}")">@drink.strIngredient11</a></li>
+                        }
+                        @if (drink.strIngredient12 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient12}")">@drink.strIngredient12</a></li>
+                        }
+                        @if (drink.strIngredient13 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient13}")">@drink.strIngredient13</a></li>
+                        }
+                        @if (drink.strIngredient14 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient14}")">@drink.strIngredient14</a></li>
+                        }
+                        @if (drink.strIngredient15 != null)
+                        {
+                            <li><a href="@($"ingredient/{drink.strIngredient15}")">@drink.strIngredient15</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="box instructions text-start text-md-center">
+                    <h3>Instructions</h3>
+                    @if (instructions.Count() > 0)
+                    {
+                        <ol class="text-start">
+                        @foreach(var item in instructions)
+                        {
+                            <li>@item</li>
+                        }
+                        </ol>
+                    }
+                    else
+                    {
+                        <p>@drink.strInstructions</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    DrinkDetailList DrinkList = new DrinkDetailList();
+    string[] DrinkTags;
+    List<string> Ingredients = new List<string>();
+    List<string> instructions = new List<string>();
+
+    string output;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            DrinkList = await Http.GetFromJsonAsync<DrinkDetailList>($"https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={Id}");
+            foreach (var drink in DrinkList.drinks)
+            {
+                if (drink.strTags != null)
+                    DrinkTags = drink.strTags.Split(',');
+
+                if (drink.strInstructions.StartsWith("1"))
+                {
+                    var instructionsArray = ParseListToLines(drink.strInstructions);
+                    foreach (var item in instructionsArray)
+                        instructions.Add(char.ToUpper(item[0]) + item.Substring(1));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            output = e.ToString();
+        }
+    }
+
+    private IEnumerable<string> ParseListToLines(string value)
+    {
+        int start = 0;
+        bool first = true;
+
+        for (int index = 1; ; ++index)
+        {
+            string toFind = $"{index}.";
+
+            int next = value.IndexOf(toFind, start);
+
+            if (next < 0)
+            {
+                yield return value.Substring(start);
+
+                break;
+            }
+
+            if (!first)
+                yield return value.Substring(start, next - start);
+
+            first = false;
+            start = next + toFind.Length;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+﻿<div class="search-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <div class="input-container">
+                    <input type="text" class="form-control" @bind="SearchString" @onkeyup="HandleSearch" @bind:event="oninput">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public string SearchString { get; set; }
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    public async void HandleSearch()
+    {
+        await Task.Delay(500);
+        var test = SearchString;
+
+
+        if (test != SearchString)
+            return;
+        else
+            await OnSearch.InvokeAsync(SearchString);
+    }
+}
